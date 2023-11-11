@@ -56,7 +56,12 @@ let props = defineProps({
 
 let search = ref(props.filters.search);
 
-watch(search, debounce(function (value) {
+  
+watch(search, 
+      // debounce causes callback to run after 300ms but it resets the previous timers if they wouldn't finish on time
+      // exactly like clearTimeout
+      // also throttle from lodash can be used which is throttling every 500ms without resetting the timeout
+      debounce(function (value) {
   Inertia.get('/users', { search: value }, { 
     preserveState: true,  // preserves the state so after the request it's not lost
     replace: true // replaces every new request with the previous one, so if one types keys, every key stroke creates a request, but it replaces the previous one,
