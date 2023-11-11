@@ -57,6 +57,10 @@ let props = defineProps({
 let search = ref(props.filters.search);
 
 watch(search, debounce(function (value) {
-  Inertia.get('/users', { search: value }, { preserveState: true, replace: true });
+  Inertia.get('/users', { search: value }, { 
+    preserveState: true,  // preserves the state so after the request it's not lost
+    replace: true // replaces every new request with the previous one, so if one types keys, every key stroke creates a request, but it replaces the previous one,
+                  // so when you wanna go back in browser history this won't be an issue
+  });
 }, 300));
 </script>
